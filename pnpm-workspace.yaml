@@ -1,0 +1,6 @@
+packages:
+  - .
+
+# The pinned esbuild dependency selects/verifies its platform binary at install.
+allowBuilds:
+  esbuild: true
