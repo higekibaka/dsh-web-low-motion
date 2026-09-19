@@ -1,0 +1,43 @@
+/* Plugin-local classes and native controls use the host theme tokens. */
+.dsh-lm-page { display: grid; gap: 24px; width: 100%; color: var(--dsw-alias-label-primary); }
+.dsh-lm-page h2 { margin: 0; font-size: 22px; line-height: 30px; font-weight: 600; }
+.dsh-lm-page p { margin: 0; color: var(--dsw-alias-label-secondary); font-size: 13px; line-height: 21px; }
+.dsh-lm-page .dsh-lm-description { margin-top: 8px; }
+.dsh-lm-card { min-width: 0; padding: 20px; border: 0.5px solid var(--dsw-alias-border-l2); border-radius: 14px; background: var(--dsw-alias-bg-base); }
+.dsh-lm-control { min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+.dsh-lm-label { padding: 0; font-size: 15px; font-weight: 500; line-height: 24px; margin-bottom: 4px; }
+.dsh-lm-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+.dsh-lm-option { display: flex; align-items: flex-start; gap: 10px; min-width: 0; padding: 14px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 10px; cursor: pointer; }
+.dsh-lm-control:not(:disabled) .dsh-lm-option:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.dsh-lm-option[data-selected='true'] { border-color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-state-business-tertiary); }
+.dsh-lm-radio { flex: 0 0 auto; width: 16px; height: 16px; margin: 3px 0 0; accent-color: var(--dsw-alias-state-business-primary); cursor: inherit; }
+.dsh-lm-radio:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 3px; }
+.dsh-lm-option:focus-within { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 2px; }
+.dsh-lm-option-content { display: grid; gap: 6px; min-width: 0; overflow-wrap: anywhere; }
+.dsh-lm-option-title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; line-height: 22px; }
+.dsh-lm-option-description { color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 20px; }
+.dsh-lm-recommended { padding: 0 6px; border-radius: 5px; color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-state-business-tertiary); font-size: 11px; font-weight: 500; line-height: 20px; }
+.dsh-lm-control:disabled .dsh-lm-option { cursor: not-allowed; opacity: 0.6; }
+.dsh-lm-status { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 18px; font-size: 12px; line-height: 20px; color: var(--dsw-alias-label-secondary); }
+.dsh-lm-badge { padding: 2px 9px; border-radius: 999px; corner-shape: round; background: var(--dsw-alias-interactive-bg-hover); }
+.dsh-lm-badge[data-mode='optimized'], .dsh-lm-badge[data-mode='reduced'] { color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-state-business-tertiary); }
+.dsh-lm-details h3 { margin: 0; font-size: 14px; line-height: 24px; font-weight: 500; }
+.dsh-lm-details ul { padding-left: 20px; margin: 10px 0 14px; color: var(--dsw-alias-label-secondary); font-size: 13px; line-height: 26px; }
+.dsh-lm-page .dsh-lm-scope { padding-top: 16px; border-top: 0.5px solid var(--dsw-alias-border-l2); color: var(--dsw-alias-label-tertiary); font-size: 12px; }
+.dsh-lm-page .dsh-lm-notice { color: var(--dsw-alias-state-warn-label); }
+.dsh-lm-fold-head { display: flex; align-items: center; gap: 10px; }
+.dsh-lm-checkbox { flex: 0 0 auto; width: 16px; height: 16px; margin: 0; accent-color: var(--dsw-alias-state-business-primary); cursor: pointer; }
+.dsh-lm-checkbox:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 3px; }
+.dsh-lm-checkbox:disabled { cursor: not-allowed; }
+.dsh-lm-fold-title { font-size: 15px; font-weight: 500; line-height: 24px; cursor: pointer; }
+.dsh-lm-fold[data-allowed='false'] .dsh-lm-fold-title { cursor: not-allowed; opacity: 0.6; }
+.dsh-lm-page .dsh-lm-fold-description { margin-top: 6px; }
+.dsh-lm-fold .dsh-lm-status { margin-top: 12px; }
+.dsh-lm-badge[data-fold='true'] { color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-state-business-tertiary); }
+@media (max-width: 640px) {
+  .dsh-lm-options { grid-template-columns: minmax(0, 1fr); }
+}
+
+.dsh-lm-frame-rate { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 20px; align-items: center; }
+.dsh-lm-frame-rate > p { grid-column: 1 / -1; }
+.dsh-lm-frame-rate select { padding: 6px 10px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 6px; color: inherit; background: var(--dsw-alias-bg-base); }

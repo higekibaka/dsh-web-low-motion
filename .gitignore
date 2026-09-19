@@ -1,0 +1,16 @@
+node_modules/
+.artifacts/
+.dsh-target/
+*.tgz
+*.log
+*.tsbuildinfo
+*Zone.Identifier
+.env
+.env.*
+.npmrc
+# Local deployment notes and drivers remain on disk, outside public releases.
+/INSTALL-RESULT.md
+/FRAME-RATE-RESULT.md
+/WEBGL-RESULT.md
+/scripts/smoke-profile.mjs
+/scripts/verify-installed.mjs

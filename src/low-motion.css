@@ -1,0 +1,33 @@
+/* Match semantic attributes, never CSS-Module hashes or translated text.
+   Suppress only pseudo-element animation/gradients: preserve solid status dots,
+   disclosure glyphs, controls, finite notifications and user-rendered media. */
+[data-chat-flow] [data-state="running"]::after,
+[data-chat-flow] [data-state="running"] *::after {
+  animation: none !important;
+  background-image: none !important;
+}
+
+/* The shared ongoing matrix also occurs in sidebars and background-job rows. */
+svg[data-state="ongoing"] rect {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* A Turn status is a direct flow child; retry status lives in its disclosure.
+   Do not select every role=status: toast entry/exit animations must finish. */
+[data-chat-flow] > [role="status"][aria-live="polite"],
+[data-chat-flow] details[data-active] > summary > [role="status"] {
+  animation: none !important;
+  background: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+[data-chat-flow] > [role="status"][aria-live="polite"] {
+  color: var(--dsw-alias-state-business-primary, currentColor) !important;
+}
+
+[data-chat-flow] details[data-active] > summary > [role="status"] {
+  color: var(--dsw-alias-label-secondary, currentColor) !important;
+}

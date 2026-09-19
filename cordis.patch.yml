@@ -1,0 +1,5 @@
+- insert:
+    - id: web-low-motion
+      name: dsh-web-low-motion
+      config:
+        enabled: true

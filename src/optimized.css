@@ -1,0 +1,53 @@
+@keyframes dsh-lm-sweep-transform {
+  0% { transform: translateX(0); }
+  90%, 100% { transform: translateX(100%); }
+}
+@keyframes dsh-lm-pixel-chase {
+  0% { opacity: 1; }
+  12.5% { opacity: .6; }
+  25% { opacity: .35; }
+  37.5%, 100% { opacity: .15; }
+}
+@keyframes dsh-lm-shimmer-translate {
+  from { transform: translateX(var(--dsh-lm-from)); }
+  to { transform: translateX(var(--dsh-lm-to)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-dsh-lm-shimmer] {
+    position: relative !important;
+    background-size: 0 0 !important;
+    animation-play-state: paused !important;
+  }
+  [data-dsh-lm-glyphs] {
+    position: absolute; inset: 0; pointer-events: none;
+    visibility: hidden;
+    background-image: inherit; background-size: 0 0;
+    mask-size: 100% 100%; mask-repeat: no-repeat;
+    contain: paint;
+  }
+  [data-dsh-lm-band] {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background-image: inherit;
+    animation: dsh-lm-shimmer-translate 1.8s linear infinite;
+  }
+  svg[data-state="ongoing"] rect {
+    animation-name: dsh-lm-pixel-chase !important;
+    animation-timing-function: step-end !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-chat-flow] > [role="status"][aria-live="polite"],
+  [data-chat-flow] details[data-active] > summary > [role="status"] {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  svg[data-state="ongoing"] rect { animation: none !important; opacity: 1 !important; }
+}
+/* Only elements registered by the decorative-animation observer carry these marks. */
+[data-dsh-lm-paused], [data-dsh-lm-paused]::after, [data-dsh-lm-paused] rect, [data-dsh-lm-paused] [data-dsh-lm-band],
+html[data-dsh-lm-hidden] [data-dsh-lm-observed],
+html[data-dsh-lm-hidden] [data-dsh-lm-observed]::after,
+html[data-dsh-lm-hidden] [data-dsh-lm-observed] rect,
+html[data-dsh-lm-hidden] [data-dsh-lm-band] {
+  animation-play-state: paused !important;
+}

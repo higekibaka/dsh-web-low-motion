@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<style data-plugin-css="@deepseek-ai/dsh-client-ui-tool/ToolRow.module.css">
+:root { --dsw-alias-state-business-primary: rgb(45, 75, 210); --dsw-alias-label-secondary: rgb(70, 70, 80); --surface: white; }
+body { background: var(--surface); }
+.row-a1, .shell-b2 { position: relative; overflow: hidden; width: 600px; height: 24px; }
+#tool[data-state="running"] .row-a1::after, .shell-b2[data-state="running"]::after { content: ''; position: absolute; inset-block: 0; left: 0; width: 300px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--surface) 60%, transparent), transparent); animation: dsh-tool-row-sweep 2.6s ease-out infinite; }
+@keyframes dsh-tool-row-sweep { 0% { left: -300px; } 90%, 100% { left: 100%; } }
+.dot-c3 { width: 10px; height: 10px; display: inline-block; position: relative; }
+.dot-c3::after { content: ''; inset: 0; position: absolute; background: rgb(0, 128, 0); border-radius: 50%; }
+svg rect { fill: blue; opacity: .15; animation: chase 1s infinite; }
+@keyframes chase { 0%, 12.4% { opacity: 1; } 12.5%, 24.9% { opacity: .6; } 25%, 37.4% { opacity: .35; } 37.5%, 100% { opacity: .15; } }
+.status-d4, .retry-e5 { background: linear-gradient(90deg, blue, lightblue, blue); background-size: 250% 100%; color: transparent; background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 1.8s infinite; }
+/* Match the host's turnStatus and retrySummary formatting contexts. A plain
+   inline retry span cannot be composited like the actual flex item can. */
+.status-d4, details[data-active] > summary { display: inline-flex; }
+@keyframes shimmer { to { background-position: 100% 0; } }
+.toast-f6 { animation: toast-in 100ms ease-out, toast-fade 1s ease 3s forwards; }
+@keyframes toast-in { from { transform: translateY(-5px); } to { transform: translateY(0); } }
+@keyframes toast-fade { to { opacity: 0; } }
+</style>
+<div class="toast-f6" role="status">A finite notification</div>
+<div data-chat-flow>
+  <div data-state="running" id="tool"><button class="row-a1">Tool running <span class="dot-c3" data-state="done"></span></button></div>
+  <div class="shell-b2" data-state="running" id="shell">Shell running</div>
+  <div class="status-d4" role="status" aria-live="polite" id="turn-status">Deep diving</div>
+  <details data-active><summary><span class="retry-e5" role="status">Retrying in 2 seconds</span></summary><p>Retry details</p></details>
+  <div id="stream">Streaming text</div>
+</div>
+<svg data-state="ongoing" width="10" height="10"><rect width="2" height="2" /></svg>
+<button id="stop">Stop</button>
+<video id="media"></video>

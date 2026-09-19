@@ -1,0 +1,69 @@
+{
+  "name": "dsh-web-low-motion",
+  "version": "0.4.5",
+  "description": "Optional native, optimized and reduced animation modes plus turn folding for DSH Web",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/index.js",
+    "src/config.js",
+    "lib/client.js",
+    "lib/client.js.map",
+    "cordis.patch.yml",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "docs/performance.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-settings-general",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-chat"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/build.mjs && node --test tests/*.test.mjs",
+    "check:build": "node scripts/build.mjs --check"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1",
+    "playwright": "1.61.1"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/higekibaka/dsh-web-low-motion.git"
+  },
+  "homepage": "https://github.com/higekibaka/dsh-web-low-motion#readme",
+  "bugs": "https://github.com/higekibaka/dsh-web-low-motion/issues",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "plugin",
+    "performance",
+    "animation"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
