@@ -1,0 +1,99 @@
+name: npm release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing stable tag to publish without moving it
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      actions: read
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Require successful tag CI and pin its commit
+        id: gate
+        run: node scripts/npm-release.mjs gate
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.gate.outputs.sha }}
+          path: release-source
+          persist-credentials: false
+      - name: Pack the validated commit without lifecycle scripts
+        working-directory: release-source
+        run: |
+          mkdir -p ../npm-package
+          npm pack --ignore-scripts --pack-destination ../npm-package
+      - name: Verify package against GitHub Release and npm
+        id: package
+        env:
+          RELEASE_SHA: ${{ steps.gate.outputs.sha }}
+        run: node scripts/npm-release.mjs verify
+      - uses: actions/upload-artifact@v4
+        if: steps.package.outputs.published != 'true'
+        with:
+          name: npm-package
+          path: npm-package/*.tgz
+          if-no-files-found: error
+    outputs:
+      published: ${{ steps.package.outputs.published }}
+      filename: ${{ steps.package.outputs.filename }}
+      integrity: ${{ steps.package.outputs.integrity }}
+
+  publish:
+    needs: prepare
+    if: needs.prepare.outputs.published != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+      - name: Use npm with Trusted Publishing support
+        run: npm install -g npm@11 --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: npm-package
+      - name: Verify transferred package integrity
+        env:
+          FILENAME: ${{ needs.prepare.outputs.filename }}
+          INTEGRITY: ${{ needs.prepare.outputs.integrity }}
+        run: |
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            import { createHash } from "node:crypto";
+            const actual = "sha512-" + createHash("sha512").update(readFileSync("npm-package/" + process.env.FILENAME)).digest("base64");
+            if (actual !== process.env.INTEGRITY) throw Error("Package integrity mismatch");
+          '
+      - name: Publish with npm OIDC and provenance
+        env:
+          FILENAME: ${{ needs.prepare.outputs.filename }}
+        run: npm publish "npm-package/$FILENAME" --ignore-scripts --provenance --access public --registry https://registry.npmjs.org/

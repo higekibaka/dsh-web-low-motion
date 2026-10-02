@@ -83,9 +83,31 @@ npm pack --ignore-scripts
 
 设置回归只读使用指定 DSH 检出的 React/ReactDOM 依赖；新版动效测试直接编译目标组件和 CSS，依赖宿主的 lightningcss。只需安装宿主依赖，不需构建或启动 DSH。宿主模块加载、store、locale、slots 等服务使用测试替身，不是实际 Loader/槽位的全栈集成验收。CI 使用固定提交的独立检出；浏览器测试启动自己的临时 Chromium，不访问日常页面或会话。
 
-版本、安装包名、当前变更记录与发布文档链接由测试检查；修改源码后必须更新并校验构建产物。Git tag 触发的 CI 通过后发布 GitHub Release；npm 是独立发布渠道，发布时应使用同一提交生成并核对过的安装包，不把 GitHub Release 成功视为 npm 已更新。
+版本、安装包名、当前变更记录与发布文档链接由测试检查；修改源码后必须更新并校验构建产物。Git tag 触发的 CI 通过后发布 GitHub Release；npm 发布由独立的 [release.yml 工作流](https://github.com/higekibaka/dsh-web-low-motion/actions/workflows/release.yml) 处理，详见下方发布说明。不把 GitHub Release 成功视为 npm 已更新。
 
 发布包包含 Host 配置入口、构建的客户端、插件补丁、README、变更记录、性能与兼容说明、第三方说明和许可证。安装后无需重新构建。开发源码、测试和工作流位于本仓库；本地部署笔记与认证材料不属于发布内容。
+
+## 维护者发布（npm Trusted Publishing）
+
+npm 自动发布使用 GitHub Actions OIDC，不设置长期 npm 令牌。包维护者须先在 [npm 包设置](https://www.npmjs.com/package/dsh-web-low-motion/access) 的 Trusted Publisher 中选择 GitHub Actions，并填写：
+
+| 字段 | 值 |
+| --- | --- |
+| Organization or user | `higekibaka` |
+| Repository | `dsh-web-low-motion` |
+| Workflow filename | `release.yml`（不是 CI 文件名，不带目录） |
+| Environment name | 留空（工作流未声明 environment） |
+| Allowed actions（若显示） | 允许直接 `npm publish`，不只是 `npm stage publish` |
+
+此授权只适用于本包，不能沿用其他包的 Trusted Publisher。配置方法见 [npm 官方说明](https://docs.npmjs.com/trusted-publishers/)。工作流使用 Node.js 24、npm 11，在独立 publish job 中申请 `id-token: write`，并以 `--ignore-scripts --provenance --access public` 发布。
+
+- **新版本**：同步包版本、README 和变更记录，构建、测试并提交后推送稳定版标签 `vX.Y.Z`。npm 工作流等待同一标签、同一提交的四宿主 CI 及 GitHub Release 全部成功；main/PR 的绿灯不能替代标签 CI。
+- **补发/重试**：在 Actions 的 `npm release` 工作流中选择默认分支，使用 `workflow_dispatch` 输入已有标签（例如 `v0.5.3`）。原标签与 GitHub 安装包不变，不重新标记旧版本。旧标签自身不必包含新增工作流。
+- **内容一致性**：从已通过 CI 的精确提交打包，禁用生命周期脚本，与 GitHub Release 安装包逐字节比较并验证 SHA256SUMS。已存在的 npm 版本仅在 SHA512 integrity 一致时跳过；不同内容直接失败，不覆盖版本，也不改变已有 dist-tag。
+- **来源证明边界**：普通标签发布记录标签工作流身份；补发记录执行补发的默认分支工作流身份，不伪装成旧标签上的工作流。旧源码提交由标签 CI 和安装包一致性检查绑定。
+- **认证失败**：检查 npm 侧的仓库、文件名和环境字段后重试；本机 `npm login` 或 GitHub PAT 不是此流程的 npm 发布凭据。只有工作流成功且 npm 可查到目标版本，才算双渠道发布完成。
+
+本节描述默认分支新增的发布自动化；已有标签内的历史文档和安装包不会被回写。
 
 ## 许可证与致谢
 
