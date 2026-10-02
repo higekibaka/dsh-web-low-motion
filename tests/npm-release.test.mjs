@@ -56,7 +56,8 @@ test('OIDC workflow and maintainer documentation retain the publishing security 
   assert.doesNotMatch(prepare, /id-token: write/);
   assert.match(publish, /needs: prepare/);
   assert.match(publish, /id-token: write/);
-  assert.match(publish, /npm publish .*--ignore-scripts --provenance --access public/);
+  assert.ok(publish.includes('npm publish "./npm-package/$FILENAME" --ignore-scripts --provenance --access public'));
   assert.doesNotMatch(workflow, /NODE_AUTH_TOKEN|NPM_TOKEN|secrets\./);
+  assert.match(docs, /Allowed actions.*npm publish/);
   for (const word of ['Trusted Publishing', 'higekibaka', 'dsh-web-low-motion', 'release.yml', 'workflow_dispatch']) assert.ok(docs.includes(word));
 });

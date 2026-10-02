@@ -96,4 +96,4 @@ jobs:
       - name: Publish with npm OIDC and provenance
         env:
           FILENAME: ${{ needs.prepare.outputs.filename }}
-        run: npm publish "npm-package/$FILENAME" --ignore-scripts --provenance --access public --registry https://registry.npmjs.org/
+        run: npm publish "./npm-package/$FILENAME" --ignore-scripts --provenance --access public --registry https://registry.npmjs.org/
