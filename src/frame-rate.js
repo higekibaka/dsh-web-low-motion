@@ -1,5 +1,5 @@
 /** Zero preserves display-paced compositor animation. Stored independently of mode. */
-export const FRAME_RATES = [0, 24, 30, 60, 120];
+export const FRAME_RATES = [0, 24, 30, 60, 120, 280];
 export const FRAME_RATE_KEY = 'dsh-web-low-motion.frame-rate.v1';
 
 export function createFrameRatePreferences(store, storageFn, allowed) {

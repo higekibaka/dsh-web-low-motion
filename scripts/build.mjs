@@ -13,7 +13,7 @@ const result = await build({
   platform: 'browser',
   target: 'es2022',
   jsx: 'automatic',
-  external: ['react', 'react/jsx-runtime', '@deepseek-ai/dsh-client-store', '@deepseek-ai/dsh-client-ui-primitives'],
+  external: ['react', 'react/jsx-runtime', '@deepseek-ai/dsh-client-store'],
   sourcemap: true,
   write: false,
   loader: { '.css': 'text' },

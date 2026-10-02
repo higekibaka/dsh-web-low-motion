@@ -9,9 +9,8 @@ const DETAILS = {
 };
 
 /** The renderer supplies the preference hooks; this component owns no subscription. */
-export function SettingsPage({ useLowMotion, setMode, useTurnFold, setFoldEnabled, useFrameRate, setFrameRate, useShimmerRenderer, setRenderer, t }) {
+export function SettingsPage({ useLowMotion, setMode, useFrameRate, setFrameRate, useShimmerRenderer, setRenderer, t }) {
   const state = useLowMotion(value => value);
-  const fold = useTurnFold(value => value);
   const renderer = useShimmerRenderer(value => value);
   const rate = useFrameRate(value => value);
   const id = useId();
@@ -71,21 +70,6 @@ export function SettingsPage({ useLowMotion, setMode, useTurnFold, setFoldEnable
           <span className="dsh-lm-badge" data-mode={state.mode}>{t(state.mode + 'Label')}</span>
           <span>{t(state.mode + 'Active')}</span>
         </div>
-      </div>
-      <div className="dsh-lm-card dsh-lm-fold" data-allowed={fold.allowed}>
-        <div className="dsh-lm-fold-head">
-          <input className="dsh-lm-checkbox" type="checkbox" id={id + '-fold'}
-            checked={fold.preference} disabled={!fold.allowed}
-            aria-describedby={id + '-fold-description' + (!fold.allowed ? ' ' + id + '-locked' : '')}
-            onChange={event => setFoldEnabled(event.target.checked)} />
-          <label className="dsh-lm-fold-title" htmlFor={id + '-fold'}>{t('foldLabel')}</label>
-        </div>
-        <p className="dsh-lm-fold-description" id={id + '-fold-description'}>{t('foldDescription')}</p>
-        <div className="dsh-lm-status" role="status" aria-live="polite" aria-atomic="true">
-          <span className="dsh-lm-badge" data-fold={fold.enabled}>{t(fold.enabled ? 'foldOnLabel' : 'foldOffLabel')}</span>
-          <span>{t(fold.enabled ? 'foldOnActive' : 'foldOffActive')}</span>
-        </div>
-        {fold.warning && <p className="dsh-lm-notice" role="alert">{t(fold.warning)}</p>}
       </div>
       {!state.allowed && <p className="dsh-lm-notice" id={id + '-locked'}>{t('locked')}</p>}
       {state.warning && <p className="dsh-lm-notice" role="alert">{t(state.warning)}</p>}

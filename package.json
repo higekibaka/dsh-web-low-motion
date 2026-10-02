@@ -1,7 +1,7 @@
 {
   "name": "dsh-web-low-motion",
-  "version": "0.4.5",
-  "description": "Optional native, optimized and reduced animation modes plus turn folding for DSH Web",
+  "version": "0.5.3",
+  "description": "为 DSH Web 提供原生、保留动效优化、低动态效果三档动效模式，以及帧率和文字流光渲染选项。",
   "type": "module",
   "main": "./src/index.js",
   "exports": {
@@ -19,7 +19,9 @@
     "THIRD_PARTY_NOTICES.md",
     "LICENSE",
     "CHANGELOG.md",
-    "docs/performance.md"
+    "docs/performance.md",
+    "docs/compatibility-017.md",
+    "docs/compatibility-020.md"
   ],
   "dsh": {
     "bundle": {
@@ -30,9 +32,7 @@
       "inject": [
         "@deepseek-ai/dsh-client-ui-slots",
         "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-settings-general",
-        "@deepseek-ai/dsh-client-ui-conversation",
-        "@deepseek-ai/dsh-client-ui-chat"
+        "@deepseek-ai/dsh-client-ui-settings-general"
       ]
     }
   },

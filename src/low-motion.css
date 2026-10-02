@@ -13,6 +13,24 @@ svg[data-state="ongoing"] rect {
   opacity: 1 !important;
 }
 
+/* DSH 0.2 retains selectable text beneath an inert decorative copy. */
+[data-chat-flow] [data-shimmer] > [aria-hidden="true"][inert] {
+  display: none !important;
+}
+[data-chat-running] svg path:has(> animate[attributeName="d"]) {
+  display: none !important;
+}
+[data-chat-running] svg path:has(> animate[attributeName="d"]) + path {
+  display: initial !important;
+}
+/* DSH 0.2.0-rc.2 supplies an APNG mask beside its static SVG fallback. */
+[data-chat-running] span[aria-hidden="true"]:has(> span + svg) > span {
+  display: none !important;
+}
+[data-chat-running] span[aria-hidden="true"]:has(> span + svg) > svg {
+  display: initial !important;
+}
+
 /* A Turn status is a direct flow child; retry status lives in its disclosure.
    Do not select every role=status: toast entry/exit animations must finish. */
 [data-chat-flow] > [role="status"][aria-live="polite"],

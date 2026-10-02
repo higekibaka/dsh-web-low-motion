@@ -29,7 +29,6 @@ async function openPage(t, mode = 'reduced') {
         } };
         if (id === 'react/jsx-runtime') return { jsx() {}, jsxs() {} };
         if (id === 'react') return { useId() { return 'test-radio'; } };
-        if (id === '@deepseek-ai/dsh-client-ui-primitives') return { Switch() {} };
         throw new Error('Unexpected platform import: ' + id);
       });
     } };
@@ -627,4 +626,18 @@ test('WebGL draws only when a capped sample changes and context budget falls bac
   assert.equal(await page.locator('canvas[data-dsh-lm-webgl]').count(),4);
   await page.evaluate(()=>window.unmount());
   assert.equal(await page.locator('canvas').count(),0);
+});
+
+test('legacy folding preferences do not register a folding layer or change native controls', async t => {
+  const page = await openPage(t, 'native');
+  await page.evaluate(() => {
+    localStorage.setItem('dsh-web-low-motion.fold-completed.v1', 'true');
+    window.mount();
+    window.dispatchEvent(new StorageEvent('storage', { key: 'dsh-web-low-motion.fold-completed.v1', storageArea: localStorage, newValue: 'false' }));
+  });
+  assert.deepEqual(await page.evaluate(() => Object.keys(window.settings.hooks).sort()), ['frameRate', 'lowMotion', 'shimmerRenderer']);
+  assert.equal(await page.locator('style[data-dsh-turn-fold], [data-dsh-turn-fold-control]').count(), 0);
+  assert.equal(await page.evaluate(() => localStorage.getItem('dsh-web-low-motion.fold-completed.v1')), 'true');
+  assert.equal(await page.locator('#stream').textContent(), 'Streaming text');
+  await page.evaluate(() => window.unmount());
 });

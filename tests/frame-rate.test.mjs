@@ -15,7 +15,7 @@ function setup(raw = null, allowed = true) {
 
 test('frame-rate preferences persist zero and caps independently, validate input and retain local choices on storage failure', () => {
   const state = setup(); assert.deepEqual(state.snapshot(), { frameRate: 0, warning: null }); assert.equal(state.writes.length, 0);
-  for (const cap of [24, 30, 60, 120, 0]) {
+  for (const cap of [24, 30, 60, 120, 280, 0]) {
     state.preference.setFrameRate(cap);
     assert.equal(setup(state.stored()).snapshot().frameRate, cap);
   }
